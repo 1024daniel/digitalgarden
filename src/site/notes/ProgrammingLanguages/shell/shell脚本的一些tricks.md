@@ -44,6 +44,10 @@ tar cf - $path | pv -s $(du -sb $path|awk '{print $1}') | gzip > file.tar.gz
 ```shell
 # 查找大文件
 find . -xdev -type f -size +100M -print | xargs ls -lh | sort -k5,5 -h -r | head
+
+# 文件夹大小排序
+du -h --max-depth=1 | sort -hr
+
 # 查看文件夹内文件个数
 find . -type f |wc -l
 tree | tail -1
@@ -177,5 +181,18 @@ done
 ll |cut -d ' ' -f 10|awk '{$1=$1}1'
 #awk -F指定空格，输入字符串多个空格连在一起会被当成一个间隔符，和cut不一样
 ll|awk -F ' ' '{print $10}'
+
+```
+
+### 15. 路径
+
+```sh
+# 保证从什么路径执行当前脚本，脚本环境的当前路径为脚本所在路径文件夹
+CURRENT_DIR=$(
+    cd $(dirname ${BASH_SOURCE:-$0})
+    pwd
+)
+cd $CURRENT_DIR
+
 
 ```
