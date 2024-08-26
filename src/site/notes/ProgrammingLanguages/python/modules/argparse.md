@@ -6,7 +6,7 @@
 
 https://blog.csdn.net/tsinghuahui/article/details/89279152
 
-```py
+```py hl:5
 import argparse
 
 if __name__ == '__main__':
@@ -26,6 +26,5 @@ import os
 enable_a = int(os.getenv("ENABLE_A", 0))
 if enable_a:
 	pass
-
 
 ```
