@@ -31,6 +31,7 @@
 
 
 以下一个代码示例中y为通过转置x获得，其实可以从后面的内存地址可以看待y和x的内存地址是一样的，都是共享同一块内存，但是y视图(view)不一样了, 读取维度数据和x不一样，也就是不是顺序读取的, z是通过调用contiguous来重新申请了一块内存，内存是连续的
+对于数据内存排布可以通过stride函数来获取，`stride`是一个整数列表，其中每个整数表示在对应维度上移动到相邻元素需要跳跃的内存单位数。对于转置操作，`transpose()`函数会交换两个指定的维度，但不会改变张量的物理内存排布
 ```py
 import torch
 x = torch.randn(2, 3)  # 创建一个形状为 (2, 3) 的张量
@@ -43,4 +44,8 @@ print(z.is_contiguous())
 print(x.data_ptr())
 print(y.data_ptr())
 print(z.data_ptr())
+
+print(x.stride())
+print(y.stride())
+print(z.stride())
 ```
