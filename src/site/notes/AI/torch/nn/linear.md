@@ -5,6 +5,7 @@
 #linear
 
 https://pytorch.org/docs/stable/generated/torch.nn.Linear.html
+Linear的操作实际是针对输入的最后一维进行一个长度转换，转换操作由内部的weight和bias和输入的tensor进行矩阵乘操作来实现
 
 Applies an affine linear transformation to the incoming data: 
 $$
@@ -32,7 +33,7 @@ output2 = torch.matmul(input, m.weight.t()) + m.bias
 print("output1:\n", output1)
 print("output2:\n", output2)
 
-assert output1 == output2
+assert torch.equal(output1, output2)
 
 
 ```
