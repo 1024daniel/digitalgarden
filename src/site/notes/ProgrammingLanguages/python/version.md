@@ -3,6 +3,8 @@
 ---
 
 #version #release
+
+基于setuptools 69.0版本`setuptools/_vendor/packaging/version.py`
 ```py
 import re
 
