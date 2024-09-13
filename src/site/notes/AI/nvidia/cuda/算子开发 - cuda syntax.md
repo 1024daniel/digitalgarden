@@ -2,7 +2,7 @@
 {"dg-publish":true,"permalink":"/AI/nvidia/cuda/算子开发 - cuda syntax/","noteIcon":"3"}
 ---
 
-
+#cuda
 ## 1.关键词介绍
 
 ### 1.1 Declaring functions
@@ -45,3 +45,9 @@ This combination allows each thread in the grid to have a unique identifier, whi
 | `threadIdx` | threadIdx specifies the index of the thread within its block.         |
 |             |                                                                       |
 |             |                                                                       |
+
+
+
+### references:
+https://icl.utk.edu/~mgates3/docs/cuda.html
+https://stackoverflow.com/questions/12373940/difference-between-global-and-device-functions
