@@ -111,6 +111,23 @@ vim file +155
 :10,20s#^#//#g
 :10,20s#^//##g
 ```
+### 10. 缩进
+
+加`!`是用于处理非空白符号之后的tab，即所有的tab，若不加!，则只处理行首的tab
+```vim
+## tab替换成空格
+:set ts=4
+:set expandtab
+:%retab!
+
+## 空格替换成tab
+:set ts=4
+:set noexpandtab
+:%retab!
+
+```
+
+
 ## vim推荐配置
 一些需要的插件需要下载安装:
 ```bash
