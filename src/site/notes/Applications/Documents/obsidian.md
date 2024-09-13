@@ -37,3 +37,10 @@ obsidian自定义全局style
 - 打开关系图 `command G`
 - 打开命令面板 `command P`
 - 添加文件属性 `commad ;`
+
+
+
+### obsidian数学表达式工具
+
+https://www.latexlive.com/
+在线latex工具编写好公式直接复制使用即可
