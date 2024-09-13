@@ -1,6 +1,7 @@
 ---
-dg-publish: true
+{"dg-publish":true,"permalink":"/OperatingSystem/Linux/network/network card/","noteIcon":"3"}
 ---
+
 查看网卡的pci地址(新版的linux的网卡一般可以通过网卡名识别)
 `ethtool -i ens7`
 ![Pasted image 20230717213002.png](/img/user/OperatingSystem/Linux/network/pics/Pasted%20image%2020230717213002.png)
