@@ -2,9 +2,16 @@
 {"dg-publish":true,"permalink":"/ProgrammingLanguages/python/conda/","noteIcon":"3"}
 ---
 
-conda install <>
-conda env list
-conda
+
+### conda 安装
+
+```sh
+# 安装之后需要执行conda init，这会在linux的~/.bashrc，mac的~/.bash_profile里面加上conda需要的一些初始化设置好让终端打开就能初始化相关环境变量，如果删除anaconda之后重新安装的话需要先清理对应的bashrc的代码片段
+conda init
+# 对于mac需要设置打开terminal生效默认环境，需要在~/.zshrc中设置,~/.zprofile中设置没有生效
+conda config --set auto_activate_base true	# 默认进入base环境, 对应的设置会写入~/.condarc
+
+```
 
 
 ### 1.环境创建
@@ -30,6 +37,8 @@ conda create -n modellink python=3.8
 conda info
 conda env list
 conda activate modellink
+
+
 
 ```
 
