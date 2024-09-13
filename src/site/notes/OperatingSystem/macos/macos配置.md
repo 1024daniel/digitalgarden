@@ -150,3 +150,8 @@ brew info pybind11
 brew --cellar pybind
 
 ```
+
+### 编译器支持
+
+https://stackoverflow.com/questions/70168181/apple-clang-13-c20-module-support-missing
+https://clang.llvm.org/cxx_status.html
