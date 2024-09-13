@@ -87,7 +87,14 @@ git config -c http.sslVerify=false clone repourl
 GIT_SSL_NO_VERIFY=true git clone repourl
 
 ```
+克隆的时候可能存在一些因为网络问题导致的克隆失败，可以尝试设置以下参数:
+```sh
+git config --global http.lowSpeedLimit 0
+git config --global http.lowSpeedTime 999999
+git clone  --depth 1
+git fetch --unshallow
 
+```
 
 ```bash
 git pull --unshallow
@@ -119,6 +126,13 @@ git push origin selectable-storage
 git branch -r
 # 查看本地分支和远端分支对应关系
 git branch -vv
+
+# 查看包特定commit的本地分支
+git branch --contains a1b2c3d4
+# 查看包特定commit的remote分支
+git branch -r --contains a1b2c3d4
+# 查看包特定commit的local和remote分支
+git branch -a --contains a1b2c3d4
 ```
 
 ### tag
