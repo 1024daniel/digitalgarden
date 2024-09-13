@@ -34,6 +34,13 @@
 
 ![Pasted image 20230730090306.png](/img/user/pics/Pasted%20image%2020230730090306.png)
 
+
+### remote-ssh
+如果需要远程连接server进行编程需要保证远程主机的sshd_config设置中这两个转发设置
+```
+AllowTcpForwarding yes
+AllowAgentForwarding yes
+```
 ### user code snippet
 命令面板输入snippet来打开Configure User Snippet
 使用网页服务快速定制code snippet来直接粘贴到vscode的snippet文件
