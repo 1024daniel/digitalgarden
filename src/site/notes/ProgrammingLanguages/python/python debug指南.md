@@ -148,6 +148,13 @@ l 32,48
 # List all source code for the current function or frame. 
 ll
 ```
+设置next或者step的时候打印当前函数上下文代码
+
+```sh title:"~/.pdbrc"
+alias n n;;ll
+alias s s;;l
+
+```
 
 ### print
 ```sh
