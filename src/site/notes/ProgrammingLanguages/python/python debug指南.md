@@ -119,6 +119,10 @@ if __name__ == "__main__":
 
 https://blog.csdn.net/wangyiyan315/article/details/122629255
 
+https://docs.python.org/3/library/pdb.html
+
+https://github.com/syl20bnr/config/blob/master/.pdbrc
+
 > [!NOTE] pdb
 > pdb不仅可以调试代码，也可以方便查看调用链，比如你想知道具体一个函数是从入口脚本怎么调用到这里的，可以直接在对应的代码片段加上`pdb.set_trace`，之后运行，达到pdb交互模式直接敲击w回车会直接显示当前调用栈
 
@@ -141,12 +145,16 @@ l
 l .
 # show specific range code snippet
 l 32,48
-
+# List all source code for the current function or frame. 
+ll
 ```
 
 ### print
 ```sh
 p variable
+
+# pretty print using pprint
+pp variable
 
 ```
 
