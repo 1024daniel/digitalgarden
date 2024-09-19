@@ -27,3 +27,29 @@ print(sys.modules['numpy'])
 print(sys.modules['numpy.fft'])
 
 ```
+
+
+判断一个module是否已经安装(包含requirement)
+```py
+import importlib
+import pkg_resources
+from pkg_resources import get_distribution
+
+def is_installed(package: str)-> bool:
+	importlib.reload(pkg_resources)
+	try:
+		get_distribution(package)
+		return True
+	except pkg_resources.DistributionNotFound:
+		return False
+	except:
+		print('get distribution error')
+		return False
+
+package='numpy==1.26.4'
+if is_installed(package):
+	print(package, 'is installed')
+else:
+	print(package, 'is not installed')
+
+```
