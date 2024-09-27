@@ -2,6 +2,8 @@
 {"dg-publish":true,"permalink":"/ProgrammingLanguages/python/conda/","noteIcon":"3"}
 ---
 
+conda和pip的区别:https://stackoverflow.com/a/20994790/14637253
+
 
 ### conda 安装
 
@@ -73,7 +75,7 @@ conda create --name new_env requirements.txt
 
 克隆已有环境
 ```bash
-conda create -n env2 python=3.9 --clone env1
+conda create -n env2 --clone env1
 ```
 **通过硬链接复制已安装的包：**
 
