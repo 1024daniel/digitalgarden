@@ -189,4 +189,11 @@ docker inspect <container name> |grep <container id>
 docker rename docker_old_name docker_new_name
 
 ```
+
+### 10.容器大小排序
+```sh
+docker ps -a --format '{{.ID}}\t{{.Names}}\t{{.Size}}' | sort -h -k 3
+
+```
+
 ##  Docker Volume
