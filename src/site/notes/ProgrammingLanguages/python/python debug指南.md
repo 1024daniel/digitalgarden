@@ -3,6 +3,7 @@
 ---
 
 #python #gdb
+![Pasted image 20241015125302.png](/img/user/ProgrammingLanguages/python/attachments/Pasted%20image%2020241015125302.png)
 
 ## 一.python gdb
 
@@ -123,6 +124,8 @@ https://docs.python.org/3/library/pdb.html
 
 https://github.com/syl20bnr/config/blob/master/.pdbrc
 
+https://www.codementor.io/@stevek/advanced-python-debugging-with-pdb-g56gvmpfa
+
 > [!NOTE] pdb
 > pdb不仅可以调试代码，也可以方便查看调用链，比如你想知道具体一个函数是从入口脚本怎么调用到这里的，可以直接在对应的代码片段加上`pdb.set_trace`，之后运行，达到pdb交互模式直接敲击w回车会直接显示当前调用栈
 
@@ -154,6 +157,9 @@ ll
 alias n n;;ll
 alias s s;;l
 
+alias lo locals()
+alias gl globals()
+
 ```
 
 ### print
@@ -171,11 +177,33 @@ globals()
 
 ```
 
-### condition breakpoint
+### breakpoint
+#break
+
+注意conditional break指定的条件使用的变量需要在break的上下文可见，比如break在一个局部作用域中，使用一个当前局部变量，即使外层不可见也是ok的
 
 ```sh
+# show all breaks info
+break
+# unconditional break
+break 10
+# add condition to break with id 1
+condition 1, ret is false
 # pause when `my_var is None` is true
-(Pdb) break your_script.py:4, my_var is None
+break your_script.py:4, my_var is None
+break 4, not ret
+
+# add commands when breakpoint is hit
+commands 1
+p variable_a
+p variable_b
+end
+
+# remove all breakpoints
+clear
+# remove breakpoint with number 1
+clear 1
+
 ```
 
 ### segement fault
