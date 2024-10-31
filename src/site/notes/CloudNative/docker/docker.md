@@ -196,4 +196,13 @@ docker ps -a --format '{{.ID}}\t{{.Names}}\t{{.Size}}' | sort -h -k 3
 
 ```
 
+
+### 11. 特权
+#privileged
+```sh
+docker ps -q | xargs docker inspect --format '{{.Id}}: {{.HostConfig.Privileged}}' | grep 'true'
+
+```
+
+
 ##  Docker Volume
