@@ -78,22 +78,32 @@ sshpass -p psd ssh pve
 
 
 ```bash
-# 通过配置文件配置， 这里我们配置登录wrt_through_pve通过中间节点zpve_middle,wrt_through_pve中配置的hostname router应为zpve_middle的hosts文件里面配置有指定ip，同样zpve_middle里面配置的Hostname应为本机hosts文件已经配置的节点，不使用name的话可以直接使用ip
-Host zpve_middle
-    Hostname zpve
+# 通过配置文件配置， 这里我们配置登录6wrt_t_pve通过中间节点wrt,6wrt_t_pve中配置的hostname pve应为wrt的hosts文件里面配置有指定ip，同样6wrt里面配置的Hostname应为本机hosts文件已经配置的节点，不使用name的话可以直接使用ip
+# 这里使用指定inet6主要是避免有的时候域名解析错误没到对应的ipv6地址而是localhost?
+Host 6wrt
+    Hostname ipv6url.com
     User root
-Host wrt_through_pve
-    Hostname router
+    AddressFamily inet6
+Host 6wrt_t_pve
+    Hostname pve
     User root
-    ProxyJump zpve_middle
+    ProxyJump 6wrt
 
 # 配置号之后可以直接登录target server
-ssh wrt_through_pve
+ssh 6wrt_t_pve
 
 # 不使用配置文件的话可以直接使用如下方式直接登录
 ssh -J middle_server target_server
 
 ```
+
+```
+Host 6wrt_t_pve
+    HostName pve
+    User root
+    ProxyCommand ssh -W %h:%p root@6wrt
+```
+• -W %h:%p: Forwards the target host and port (%h and %p) through the jump host.
 
 #forward
 ### 3.端口转发和隧道
