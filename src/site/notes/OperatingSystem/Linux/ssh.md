@@ -114,3 +114,15 @@ ssh -L [本地IP:]本地端口:目标服务器IP:目标端口 用户名@SSH服�
 # 建立一个隧道本地的2777端口的包转发到172.31.224.191上的22端口，然后转发到remote的2777端口
 ssh -L 2777:localhost:2777 root@172.31.224.191 -p 22
 ```
+
+### 4. 保持长连接
+
+```sh
+# LoginGraceTime指定 SSH 客户端连接到服务器后，在完成登录验证（如输入用户名和密码或提供密钥）之前的允许时间。如果客户端在该时间内未完成认证，服务器会主动断开连接
+LoginGraceTime 30s   # 超时时间为 30 秒
+LoginGraceTime 5m    # 超时时间为 5 分钟
+# 如果 ClientAliveInterval=10 和 ClientAliveCountMax=3，则总超时时间为 10 * 3 = 30 秒。
+ClientAliveInterval 10 # 服务器向客户端发送**心跳消息**（keep-alive 消息）的间隔时间（秒）。用于检测客户端是否仍然在线
+ClientAliveCountMax 3 # 指定在客户端无响应的情况下，服务器可以容忍的最大心跳消息数量。
+
+```
