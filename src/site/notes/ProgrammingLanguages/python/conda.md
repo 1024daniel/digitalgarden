@@ -3,7 +3,9 @@
 ---
 
 conda和pip的区别:https://stackoverflow.com/a/20994790/14637253
+conda和miniconda获取链接
 https://repo.anaconda.com/archive/
+https://repo.anaconda.com/miniconda/
 
 
 ### conda 安装
