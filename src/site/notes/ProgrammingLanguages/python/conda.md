@@ -3,6 +3,7 @@
 ---
 
 conda和pip的区别:https://stackoverflow.com/a/20994790/14637253
+https://repo.anaconda.com/archive/
 
 
 ### conda 安装
