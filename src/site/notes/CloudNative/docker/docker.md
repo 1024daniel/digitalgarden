@@ -18,7 +18,8 @@ docker和maven，npm类似，代理和系统代理不一样需要单独配置，
 
 ```bash
 systemctl daemon-reload
-systemctl restart docker
+# 一般不需要restart docker即可看到生效systemctl cat docker
+# systemctl restart docker
 systemctl show --property=Environment docker
 ```
 其中daemon.json的方式只能docker高版本支持(23.0以上)
@@ -146,17 +147,25 @@ docker cp host_path container_name:path
 docker info | grep "Docker Root Dir"
 docker info -f '{{ .DockerRootDir }}'
 ```
+
+首先先停掉docker之后开始备份数据，<font color="#ff0000">数据备份不能丢失文件权限等信息</font>，否则容器进入存在没有权限等问题
+```sh
+rsync -aP /var/lib/docker /data/
+
+```
 `vim /etc/docker/daemon.json`
 ```json
 { 
-   "data-root": "/runtime/docker"
+   "data-root": "/data/docker"
 }
 ```
 
 ```bash
 # restart and check whether the modifies is avtivated
+systemctl daemon-reload
 systemctl restart docker
 docker info -f '{{ .DockerRootDir }}'
+docker info | grep "Docker Root Dir"
 
 ```
 
@@ -171,6 +180,15 @@ docker info -f '{{ .DockerRootDir }}'
 docker inspect --format {{.HostConfig.Binds}} <container_name>
 
 ```
+查看物理机中/var/lib/docker/overlay2/中长hash文件夹对应的容器
+```sh
+containers=$(docker ps -aq)
+for i in $containers;do
+	docker inspect $i| grep $i || echo $i
+done
+
+```
+
 ### 8.容器配置
 #shm
 修改shm大小
@@ -201,6 +219,12 @@ docker ps -a --format '{{.ID}}\t{{.Names}}\t{{.Size}}' | sort -h -k 3
 #privileged
 ```sh
 docker ps -q | xargs docker inspect --format '{{.Id}}: {{.HostConfig.Privileged}}' | grep 'true'
+
+```
+### 11.查看容器空间大小
+
+```sh
+docker ps -s
 
 ```
 
