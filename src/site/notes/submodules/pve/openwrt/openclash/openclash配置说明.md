@@ -4,6 +4,8 @@
 
 #clash
 
+https://github.com/Aethersailor/Custom_OpenClash_Rules?tab=readme-ov-file
+
 ### 1.域名指定使用节点
 As I wanna use new bing's chat AI in clash rule mode(it work in clash global mode), I need to overwrite clash default rule mode to make bing.com does not go to cn.bing.com.
 go to openclash and download clash rule file
