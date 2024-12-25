@@ -20,9 +20,23 @@ export LD_LIBRARY_PATH=${GCC_HOME}/lib64:${MPFR_HOME}/lib:${CUDA_PATH}/lib64:$LD
 export PATH=${GCC_HOME}/bin:${CUDA_PATH}/bin:$PATH
 export CC=${GCC_HOME}/bin/gcc
 export CXX=${GCC_HOME}/bin/c++
+
+
 ```
 
+如果当前系统cuda版本和想要的cuda版本不一致，为了不破坏系统的cuda版本，可以使用conda进行环境隔离(比如PyTorch 1.11 官方仅支持到 CUDA 11.x，当前系统环境cuda版本是12.1)
+```sh
+conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
+conda install -c conda-forge cudatoolkit-dev=11.3
 
+export PATH=$CONDA_PREFIX/bin:$PATH
+export CUDA_HOME=$CONDA_PREFIX
+export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+
+python -c "import torch; print(torch.cuda.is_available()); print(torch.version.cuda)"
+nvcc --version
+
+```
 
 查看cuda版本
 https://www.cnblogs.com/wuliytTaotao/p/11453265.html
