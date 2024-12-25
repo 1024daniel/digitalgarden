@@ -62,7 +62,7 @@ git log --oneline
 ```
 
 ## 克隆
-针对比较大的项目比如linux和ceph，如果直接clone的话，数据量会比较大，主要的数据是源码还有就是分支，commit信息之类的。其中commit信息等元数据占的比重并不少，克隆的时候可以考虑将这些元数据不要进行下载
+针对比较大的项目比如linux,ceph或者hf上面的权重，如果直接clone的话，数据量会比较大，主要的数据是源码还有就是分支，commit信息之类的。其中commit信息等元数据占的比重并不少，克隆的时候可以考虑将这些元数据不要进行下载
 
 ```bash
 git clone --depth 1 --branch v4.10-rc4  \
@@ -89,6 +89,8 @@ GIT_SSL_NO_VERIFY=true git clone repourl
 ```
 克隆的时候可能存在一些因为网络问题导致的克隆失败，可以尝试设置以下参数:
 ```sh
+git config --global http.postBuffer 2097152000
+
 git config --global http.lowSpeedLimit 0
 git config --global http.lowSpeedTime 999999
 git clone  --depth 1
@@ -98,6 +100,15 @@ git fetch --unshallow
 
 ```bash
 git pull --unshallow
+```
+对于git lfs下载hf上面权重，如果在执行git lfs install; git clone repo之后出现网络中断或者意外退出，为了断点续传可以执行以下命令
+```sh
+cd repo
+git lfs pull
+# 查看lfs文件状态，带*号的表示还未下载完
+git lfs ls-files
+git reset --hard ## 文件夹大小正确，文件缺失的话可以考虑执行该命令，注意有可能会丢失文件
+
 ```
 
 ## 代理
