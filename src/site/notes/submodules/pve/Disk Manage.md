@@ -60,6 +60,28 @@ reboot
 
 根目录扩展到新加的逻辑卷
 ![Pasted image 20231114000739.png](/img/user/submodules/pve/pics/Pasted%20image%2020231114000739.png)
+
+## 4.精简池和精简卷
+#thinpool
+Thin Pool实际上也是一个LV
+精简卷（Thin Volume）是一种逻辑卷管理技术，旨在提高存储效率。与传统逻辑卷不同，精简卷使用按需分配（Thin Provisioning），即在实际使用数据时才分配存储空间，而不是在创建时预先分配全部空间。
+![Pasted image 20250101043445.png](/img/user/submodules/pve/attachments/Pasted%20image%2020250101043445.png)
+这里可以看到base-102-disk-0等都是data这个精简池里面的，而这个data精简池也是一个LV
+从Attr中看到关键字t则表示是精简lv的含义
+> [!NOTE] 注意
+> 精简池和普通的逻辑卷不同的是精简池不直接存储用户数据，只为Thin volume提供支持，因此没有类似普通逻辑卷在/dev/下面有挂载路径，不过对于精简池的操作可以不通过挂载路径而是通过vg_name/thin_pool方式
+精简池和精简卷相关操作:
+```sh
+#创建一个大小为 50GB 的精简池：
+lvcreate -L 50G --thinpool thin_pool thin_vg
+#从精简池中创建一个大小为 10GB 的精简卷：
+lvcreate -V 10G --thin -n thin_lv thin_vg/thin_pool
+#扩展精简池的大小：
+lvextend -L +10G thin_vg/thin_pool
+```
+
+
+
 ## Related posts
 [resize partition](https://www.ibm.com/docs/en/cloud-pak-system-w3550/2.3.3?topic=images-extending-partition-file-system-sizes)
 
