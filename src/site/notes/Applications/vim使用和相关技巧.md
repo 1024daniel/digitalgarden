@@ -38,8 +38,12 @@ ctrl R
 ```
 ### 4.批量替换
 
+> [!NOTE] 注意
+> %表示整个文件，否则只会替换当前行
+
+
 ```bash
-:s/hello/hi/g
+:%s/hello/hi/g
 ```
 
 ### 5.编码相关
@@ -124,6 +128,7 @@ vim file +155
 :set ts=4
 :set noexpandtab
 :%retab!
+
 
 ```
 
