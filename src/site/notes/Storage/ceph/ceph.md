@@ -1,7 +1,8 @@
 ---
-{"dg-publish":true,"permalink":"/Storage/ceph/ceph/","noteIcon":""}
+{"dg-publish":true,"permalink":"/Storage/ceph/ceph/","noteIcon":"3"}
 ---
 
+#storage/ceph
 ## config
 show a config of ceph, ceph-osd@0 service should  be in the node where we execute below code.
 > ceph daemon osd.0 config show |grep mon_max
@@ -92,6 +93,7 @@ rm -rf /var/run/ceph/*
 ```
 
 ## clean backend partition of osd
+#cut #dmsetup
 ```bash
 dmsetup ls | awk '{$1=$1}1' |cut -d ' ' -f 1 | grep ceph | xargs dmsetup remove
 lsblk | grep -e -nvme | cut -d '-' -f 2 | awk '{$1=$1}1' | cut -d ' ' -f 1 | xargs -i dd if=/dev/zero of=/dev/{} bs=512k count=1
@@ -112,4 +114,27 @@ rados -p test import test
 ```bash
 ceph daemon osd.0 perf dump prioritycache:kv
 
+```
+
+查看rbd image当前已经已使用的空间
+```bash
+rbd du pool/image
+```
+查看磁盘使用情况
+```bash
+iostat -xmt 3
+```
+ceph线程
+
+
+
+tp_osd_tp
+kv_sync
+kv_finally
+asyncmessage
+
+
+ceph配置参数
+```bash
+rbd_op_threads = 4 #fio操作进程创建的librbd_tp线程个数，不是越多越好
 ```

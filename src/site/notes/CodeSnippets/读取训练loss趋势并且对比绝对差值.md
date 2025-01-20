@@ -1,10 +1,10 @@
 ---
-{"dg-publish":true,"permalink":"/CodeSnippets/读取训练loss趋势并且对比绝对差值/","noteIcon":"","created":"","updated":""}
+{"dg-publish":true,"permalink":"/CodeSnippets/读取训练loss趋势并且对比绝对差值/","noteIcon":"3"}
 ---
 
 #python #re #numpy #matplotlib #ai
 
-```py
+```python
 import re
 import matplotlib.pyplot as plt
 import numpy as np

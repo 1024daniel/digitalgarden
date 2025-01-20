@@ -1,23 +1,23 @@
-@import url('https://cdn.staticfile.org/lxgw-wenkai-screen-webfont/1.6.0/lxgwwenkaiscreen.css');
-* {
-  /* Screen version */
-  font-family: "LXGW WenKai Screen", sans-serif;
-}
+// @import url('https://cdn.staticfile.org/lxgw-wenkai-screen-webfont/1.6.0/lxgwwenkaiscreen.css');
+// * {
+//   /* Screen version */
+//   font-family: "LXGW WenKai Screen", sans-serif;
+// }
 
-body {
-    /***
-      ADD YOUR CUSTOM STYLIING HERE. (INSIDE THE body {...} section.)
-      IT WILL TAKE PRECEDENCE OVER THE STYLING IN THE STYLE.CSS FILE.
-   ***/
-    //  background-color: white;
-    //  .content {
-    //   font-size: 14px;
-    //  }
-    //  h1 {
-    //   color: black;
-    //  }
-font-family: "LXGW WenKai Screen", sans-serif;
-}
+// body {
+//     /***
+//       ADD YOUR CUSTOM STYLIING HERE. (INSIDE THE body {...} section.)
+//       IT WILL TAKE PRECEDENCE OVER THE STYLING IN THE STYLE.CSS FILE.
+//    ***/
+//     //  background-color: white;
+//     //  .content {
+//     //   font-size: 14px;
+//     //  }
+//     //  h1 {
+//     //   color: black;
+//     //  }
+// font-family: "LXGW WenKai Screen", sans-serif;
+// }
 
 // @import url(https://fonts.googleapis.com/css?family=Merriweather);
 // body.theme-dark {--text-accent: hsl(169.74, 88.68%, 39.22%);}
@@ -273,3 +273,8 @@ font-family: "LXGW WenKai Screen", sans-serif;
 //     nav.toc { padding-top: 0; }
 // }
 
+#disqus_thread {
+    width: 80%;
+    max-width: 710px;
+    margin: 3rem auto 0;
+}

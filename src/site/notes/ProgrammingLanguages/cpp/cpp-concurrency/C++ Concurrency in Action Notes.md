@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/ProgrammingLanguages/cpp/cpp-concurrency/C++ Concurrency in Action Notes/","noteIcon":""}
+{"dg-publish":true,"permalink":"/ProgrammingLanguages/cpp/cpp-concurrency/C++ Concurrency in Action Notes/","noteIcon":"3"}
 ---
 
 # 1. Hello, world of concurrency in C++!

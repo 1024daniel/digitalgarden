@@ -1,10 +1,14 @@
 ---
-{"dg-publish":true,"permalink":"/ProgrammingLanguages/python/basic_syntax/","noteIcon":""}
+{"dg-publish":true,"permalink":"/ProgrammingLanguages/python/basic_syntax/","noteIcon":"3"}
 ---
 
 #format #print
 ## format
 [python format deatils](https://pyformat.info/)
+f-stirng
+```python
+
+```
 1. new style
 ```python
 stat='well'
@@ -23,13 +27,13 @@ print("the stat is %s, ret code is %d" %(stat,ret))
 ```
 
 ## string
-```py
+```python
 name='George'
 print(f"my name is {name}")
 ```
 
 join string
-```py
+```python
 # Joining with empty separator
 list1 = ['g', 'e', 'e', 'k', 's']
 print("".join(list1))

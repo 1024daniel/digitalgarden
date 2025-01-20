@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/OperatingSystem/Linux/network/cntlm/","noteIcon":""}
+{"dg-publish":true,"permalink":"/OperatingSystem/Linux/network/cntlm/","noteIcon":"3"}
 ---
 
 #proxy #network

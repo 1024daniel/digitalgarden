@@ -1,9 +1,13 @@
 ---
-{"dg-publish":true,"permalink":"/submodules/pve/proxmox setup note/","noteIcon":""}
+{"dg-publish":true,"permalink":"/submodules/pve/proxmox setup note/","noteIcon":"3"}
 ---
 
 #deploy #pve
 
+![Pasted image 20231119161843.png|100%](/img/user/pics/Pasted%20image%2020231119161843.png)
+
+## My Home Lab Server Topology
+![pve.png](/img/user/pics/pve.png)
 ## 1. use rufus to make a boot usb from a installed proxmox iso
 
 ## 2. start the machine and press del to get into bios,  set usb as the most prority device to load os

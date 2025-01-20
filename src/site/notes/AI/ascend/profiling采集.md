@@ -1,0 +1,81 @@
+---
+{"dg-publish":true,"permalink":"/AI/ascend/profiling采集/","noteIcon":"3"}
+---
+
+#profiler
+### 1.进程级别采集
+https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/80RC2alpha001/devaids/auxiliarydevtool/atlasprofiling_16_0016.html
+
+比较原始的profiling采集方法，使用cann相关的工具包，对于训练和推理都可以进行相关的性能采集任务
+
+> [!NOTE] 注意
+> 该采集方式是通过服务启动用户工作目录当前的sock文件进行通信的，比如是root用户启动推理任务的话，/root/目录会有一个sock文件，我们启动msprof采集任务的话也需要以root用户启动，如果推理任务的是HwHiAiUser启动的话，msprof也需要使用HwHiAiUser启动，防止msprof找不到对应的sock文件
+
+![Pasted image 20240513101806.png](/img/user/AI/ascend/attachments/Pasted%20image%2020240513101806.png)
+
+### 2.常规采集
+见高亮的20行和49行，如果只需要traceview.json的话只需要49行可以去除20行，加上20行的话torch npu会采集更详细的信息到指定文件夹，包含各个算子的耗时统计一系列csv文件
+
+```py hl:20,49
+import torch
+import torch_npu
+import time
+
+def test_linear(num_runs=200):
+    forward_times = []
+    backward_times = []
+
+    input = torch.randn(
+        [32768, 1, 1024], dtype=torch.bfloat16, device="npu", requires_grad=True
+    )
+    weight = torch.randn(
+        [8192, 1024], dtype=torch.bfloat16, device="npu", requires_grad=True
+    )
+    
+    llm_profile = torch_npu.profiler.profile(
+                    activities=[torch_npu.profiler.ProfilerActivity.CPU, torch_npu.profiler.ProfilerActivity.NPU],
+                    with_stack=True,
+                    with_modules=True,
+                    on_trace_ready=torch_npu.profiler.tensorboard_trace_handler("./910b_linear")
+                )
+    llm_profile.start()
+    for _ in range(num_runs):
+        # Measure forward time
+        torch.npu.synchronize()
+        fwd_start_time = time.time()
+        # 模型层计算linear，使用torch npu总计有4种方式可实现该功能
+        # 无论下面4种方式最终调用的是aclnnmm还是aclnnmatmul，最终在设备计算流上都是调用aclnnMm_MatMulCommon_MatMulV2，耗时也都相同
+        # output_parallel = torch_npu.npu_linear(torch.squeeze(input), weight).unsqueeze(1)
+        # output_parallel = torch.mm(torch.squeeze(input), weight.t()).unsqueeze(1)
+        # output_parallel = torch.matmul(input, weight.t())
+        output_parallel = torch.nn.functional.linear(input, weight)
+        torch.npu.synchronize()
+        fwd_end_time = time.time()
+        forward_times.append(fwd_end_time - fwd_start_time)
+
+        # Measure backward time
+        if torch.is_tensor(output_parallel):
+            label = torch.ones_like(output_parallel)
+            torch.npu.synchronize()
+            bwd_start_time = time.time()
+            output_parallel.backward(label)
+            torch.npu.synchronize()
+            bwd_end_time = time.time()
+            backward_times.append(bwd_end_time - bwd_start_time)
+        else:
+            raise RuntimeError("the result of forward is not a tensor")
+    llm_profile.stop()
+    llm_profile.export_chrome_trace(f"./910b_linear.json")
+    avg_forward_time = (sum(forward_times) / num_runs) * 1000  # Convert to milliseconds
+    avg_backward_time = (
+        sum(backward_times) / num_runs
+    ) * 1000  # Convert to milliseconds
+    print("第一组测试")
+    print(f"Average forward time over {num_runs} runs: {avg_forward_time:.3f} ms")
+    print(f"Average backward time over {num_runs} runs: {avg_backward_time:.3f} ms")
+    print(
+        f"Average fwd+bwd time over {num_runs} runs: {avg_forward_time + avg_backward_time:.3f} ms"
+    )
+
+test_linear()
+```

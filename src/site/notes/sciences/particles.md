@@ -1,10 +1,10 @@
 ---
-{"dg-publish":true,"permalink":"/sciences/particles/","noteIcon":"","created":"","updated":""}
+dg-publish: true
 ---
+#science #physics
 
-
-
-![Pasted image 20230902101531.png](/img/user/pics/Pasted%20image%2020230902101531.png)
+![Pasted image 20230902101531.png|100%](/img/user/pics/Pasted%20image%2020230902101531.png)
+![Pasted image 20230910011034.png](/img/user/pics/Pasted%20image%2020230910011034.png)
 
 ## 基本粒子定义和相关概念
 1. elemental particles :
@@ -39,3 +39,7 @@ but as we know particles like electron should spin faster than speed of light to
 	:release bind energy, as bind-energy is negative to the mass of atoms, no particles disappear.
 13. annihilation
 	: particles collide with its antiparticles will produces photons(energy). the conversion of matter into energy, especially the mutual conversion of a particle and an antiparticle into electromagnetic radiation.
+14. mass:
+	You have to accept that mass actually is energy. Just energy trapped in a form from which it cannot be easily extracted. So the vast majority of the mass of an atom is actually energy “trapped” by holding together the quarks that form it.
+	When fusion occurs, say between two deuterium atoms to form helium (I know that doesn’t happen directly, but assume it does), the quarks that formed the two atoms, clustered into protons and neutrons, find that they can snuggle together a bit more tightly as a helium nucleus than they could as two deuterium nuclei. So they emit some energy that they no longer need as they cluster just slightly more closely together.
+	And that energy is mass. Not is converted from mass. When it was stuck inside the deuterium atoms, we saw it as mass, because we couldn’t access it. But when it escaped, we saw it as energy. But when it escaped, the remaining mass/energy of the nucleus decreased. And we saw that as a loss of mass.
