@@ -5,7 +5,7 @@ const matter = require("gray-matter");
 const faviconsPlugin = require("eleventy-plugin-gen-favicons");
 const tocPlugin = require("eleventy-plugin-nesting-toc");
 const { parse } = require("node-html-parser");
-const htmlMinifier = require("html-minifier");
+const htmlMinifier = require("html-minifier-terser");
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 
 const { headerToId, namedHeadingsFilter } = require("./src/helpers/utils");
@@ -94,12 +94,6 @@ function getAnchorAttributes(filePath, linkTitle) {
 const tagRegex = /(^|\s|\>)(#[^\s!@#$%^&*()=+\.,\[{\]};:'"?><]+)(?!([^<]*>))/g;
 
 module.exports = function (eleventyConfig) {
-  // add support for vercel speed insights
-  // import { injectSpeedInsights } from '@vercel/speed-insights';
-  // injectSpeedInsights();
-  var vercel = require("@vercel/speed-insights")
-  vercel.injectSpeedInsights()
-
   eleventyConfig.setLiquidOptions({
     dynamicPartials: true,
   });
@@ -387,13 +381,26 @@ module.exports = function (eleventyConfig) {
           }
         );
 
+        /* Hacky fix for callouts with only a title:
+        This will ensure callout-content isn't produced if
+        the callout only has a title, like this:
+        ```md
+        > [!info] i only have a title
+        ```
+        Not sure why content has a random <p> tag in it,
+        */
+        if (content === "\n<p>\n") {
+          content = "";
+        }
+        let contentDiv = content ? `\n<div class="callout-content">${content}</div>` : "";
+
         blockquote.tagName = "div";
         blockquote.classList.add("callout");
         blockquote.classList.add(isCollapsable ? "is-collapsible" : "");
         blockquote.classList.add(isCollapsed ? "is-collapsed" : "");
         blockquote.setAttribute("data-callout", calloutType.toLowerCase());
         calloutMetaData && blockquote.setAttribute("data-callout-metadata", calloutMetaData);
-        blockquote.innerHTML = `${titleDiv}\n<div class="callout-content">${content}</div>`;
+        blockquote.innerHTML = `${titleDiv}${contentDiv}`;
       }
     };
 
@@ -438,10 +445,13 @@ module.exports = function (eleventyConfig) {
 
 
   eleventyConfig.addTransform("picture", function (str) {
+    if(process.env.USE_FULL_RESOLUTION_IMAGES === "true"){
+      return str;
+    }
     const parsed = parse(str);
     for (const imageTag of parsed.querySelectorAll(".cm-s-obsidian img")) {
       const src = imageTag.getAttribute("src");
-      if (src && src.startsWith("/") && !src.endsWith(".svg") && !src.endsWith(".png") && !src.endsWith(".gif")) {
+      if (src && src.startsWith("/") && !src.endsWith(".svg")) {
         const cls = imageTag.classList.value;
         const alt = imageTag.getAttribute("alt");
         const width = imageTag.getAttribute("width") || '';
@@ -493,7 +503,7 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addTransform("htmlMinifier", (content, outputPath) => {
     if (
-      process.env.NODE_ENV === "production" &&
+      (process.env.NODE_ENV === "production" || process.env.ELEVENTY_ENV === "prod") &&
       outputPath &&
       outputPath.endsWith(".html")
     ) {
@@ -501,6 +511,8 @@ module.exports = function (eleventyConfig) {
         useShortDoctype: true,
         removeComments: true,
         collapseWhitespace: true,
+        conservativeCollapse: true,
+        preserveLineBreaks: true,
         minifyCSS: true,
         minifyJS: true,
         keepClosingSlash: true,
@@ -520,9 +532,13 @@ module.exports = function (eleventyConfig) {
 
 
   eleventyConfig.addFilter("dateToZulu", function (date) {
-    if (!date) return "";
-    return new Date(date).toISOString("dd-MM-yyyyTHH:mm:ssZ");
+    try {
+      return new Date(date).toISOString("dd-MM-yyyyTHH:mm:ssZ");
+    } catch {
+      return "";
+    }
   });
+  
   eleventyConfig.addFilter("jsonify", function (variable) {
     return JSON.stringify(variable) || '""';
   });
@@ -557,5 +573,3 @@ module.exports = function (eleventyConfig) {
     passthroughFileCopy: true,
   };
 };
-
-
