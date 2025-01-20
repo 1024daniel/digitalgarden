@@ -14,4 +14,8 @@ https://zhuanlan.zhihu.com/p/82312421
 ![Pasted image 20241124140104.png](/img/user/AI/transformers/attachments/Pasted%20image%2020241124140104.png)
 
 
+![Transformers(how LLMs work)](https://www.youtube.com/watch?v=wjZofJX0v4M)
+
+
+
 ![Pasted image 20250119001634.png](/img/user/AI/transformers/attachments/Pasted%20image%2020250119001634.png)
