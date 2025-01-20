@@ -15,7 +15,7 @@ embedding相当于一个简单的查找表，内容存储在属性weight中，�
 <font color="#f79646">embeddding的weight是一个torch.nn.Parameter类型，该类型是Tensor的子类，但具有torch.nn.Module的属性，这种类型的参数会参与模型梯度计算，在调用optimizer.step()的时候会自动更新</font>
 embedding的输入的每个数字相当于从weight中的具体的index，一个数字取出来的维度为(1, embedding_dim)，其中embedding_dim就是每个embedding vector的长度
 
-Embedding是通过lookup(比onehot和权重进行矩阵乘操作更高效)的方式将高维稀疏向量转化为稠密向量，这个稠密的向量用于下游网络的特征提取。
+Embedding是通过lookup(比onehot和权重进行矩阵乘操作更高效)的方式将高维稀疏向量转化为稠密向量(比如king和queen在高维词表空间可能位置相近)，这个稠密的向量用于下游网络的特征提取。
 
 ![Pasted image 20240912121756.png](/img/user/AI/torch/attachments/Pasted%20image%2020240912121756.png)
 
