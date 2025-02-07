@@ -54,7 +54,15 @@ git push
 
 ```
 
-## 日志
+### commit
+
+```sh
+# 修改上一次的
+git log --amend
+
+```
+
+## log
 
 ```bash
 git log --oneline
@@ -204,10 +212,12 @@ git stash clear
 ```bash
 ## 针对最近4个commit进行交互式rebase修改，
 git rebase -i HEAD~4
-
+# merge模式: 当本地和远程都有一个commit没有同步，rebase之后会额外创建一个merge commit
+git config pull.rebase false
+# rebase模式: 当本地和远程都有一个commit没有同步，rebase之后不会创建merge commit
+git config pull.rebase true
 ```
-
-
+![Pasted image 20250207000434.png](/img/user/OperatingSystem/Linux/git/attachments/Pasted%20image%2020250207000434.png)
 
 ### reset
 
@@ -215,3 +225,7 @@ git rebase -i HEAD~4
 git reset 
 
 ```
+
+
+
+
