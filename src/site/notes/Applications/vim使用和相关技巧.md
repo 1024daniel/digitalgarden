@@ -86,7 +86,8 @@ tr -d '\000' < inputfile > outputfile
 vim ~/.vimrc
 
 ### 有的时候新增文件~/.vimrc加上se nu会导致原本能高亮打开代码文件后续没有高亮了，原因可能是vim读取文件顺序变了，需要在vimrc上加上以下两行
-ob
+syntax on
+filetype plugin indent on
 
 ```
 ### 7.visual mode
