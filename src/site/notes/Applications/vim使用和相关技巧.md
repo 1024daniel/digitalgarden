@@ -69,9 +69,7 @@ set fileencoding=utf-8
 ^M$   windows换行符 "/r/n"
 $     unix, modern mac换行符 "\n"
 ^M    早期mac换行符"\r"
-#
-{ #M}
-, Windows/Dos环境下换行符"/r/n",在unix环境打开会将/r渲染成^M
+# ^M, Windows/Dos环境下换行符"/r/n",在unix环境打开会将/r渲染成^M
 # ^@ 表示空字符，通常不可见，但是vim会将其渲染成^@,^表示控制字符，`@`表示ASCII码为0的字符
 #对于文件在mac或者linux打开存在出现^M,^@等一些字符导致文件排布和原始系统查看不一致，一般可以通过以下手段还原：
 :set ff=unix
@@ -86,7 +84,9 @@ tr -d '\000' < inputfile > outputfile
 ```bash
 :syntax on
 vim ~/.vimrc
-syntax on
+
+### 有的时候新增文件~/.vimrc加上se nu会导致原本能高亮打开代码文件后续没有高亮了，原因可能是vim读取文件顺序变了，需要在vimrc上加上以下两行
+ob
 
 ```
 ### 7.visual mode
