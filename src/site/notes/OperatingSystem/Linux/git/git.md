@@ -17,7 +17,15 @@ git -c http.sslVerify=false clone xxx.git
 
 ## checkout
 #checkout
-https://stackoverflow.com/a/6561160
+
+```cardlink
+url: https://stackoverflow.com/a/6561160
+title: "Difference between \"git checkout <filename>\" and \"git checkout -​- <filename>\""
+description: "http://norbauer.com/notebooks/code/notes/git-revert-reset-a-single-fileI have found a post. But still don't know what is the difference betweengit checkout &lt;filename&gt;git checkout -- &lt;"
+host: stackoverflow.com
+image: https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded
+```
+
 ```bash
 git checkout README     # would normally discard uncommitted changes
                         # to the _file_ "README"
@@ -57,8 +65,11 @@ git push
 ### commit
 
 ```sh
-# 修改上一次的
-git log --amend
+# 修改上一次的提交信息
+git commit --amend
+# 修改上一次的提交人信息
+git commit --amend --author="new name <>new.email@example.com" --no-edit
+
 
 ```
 
@@ -66,6 +77,8 @@ git log --amend
 
 ```bash
 git log --oneline
+# 展示前三个commit
+git log -3
 
 ```
 
@@ -219,10 +232,21 @@ git config pull.rebase true
 ```
 ![Pasted image 20250207000434.png](/img/user/OperatingSystem/Linux/git/attachments/Pasted%20image%2020250207000434.png)
 
-### reset
+## reset
 
 ```sh
 git reset 
+
+```
+
+### push
+当前github开始支持PAT替换密码进行安全校验.对于提交代码需要输入用户名，密码需要用PAT
+生成PAT参考:
+https://github.com/settings/tokens
+注意PAT只会明文显示一次，需要自行保存好
+如果不想每次输入PAT需要进行设置:
+```sh
+git config --global credential.helper store
 
 ```
 
