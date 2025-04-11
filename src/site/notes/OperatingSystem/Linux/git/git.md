@@ -62,7 +62,7 @@ git push
 
 ```
 
-### commit
+## commit
 
 ```sh
 # 修改上一次的提交信息
@@ -82,7 +82,7 @@ git log -3
 
 ```
 
-## 克隆
+## clone
 针对比较大的项目比如linux,ceph或者hf上面的权重，如果直接clone的话，数据量会比较大，主要的数据是源码还有就是分支，commit信息之类的。其中commit信息等元数据占的比重并不少，克隆的时候可以考虑将这些元数据不要进行下载
 
 ```bash
@@ -131,8 +131,23 @@ git lfs ls-files
 git reset --hard ## 文件夹大小正确，文件缺失的话可以考虑执行该命令，注意有可能会丢失文件
 
 ```
+针对特定组织需要指定密钥进行拉取代码
+```sh
+GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519" git clone <>
+# 或者通过指定脚本，这里指定的sh脚本里面就是上面GIT_SSH_COMMAND的内容
+GIT_SSH=/Users/daniel/code/ascend/ssh-ascend.sh git clone
+```
 
-## 代理
+## pull
+
+
+```sh
+
+GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519" git pull
+
+```
+
+## proxy
 git在windows设置代理,注意<font color="#00b050">这里设置的代理要么不加引号或者加双引号，不能用单引号，单引号会当做代理的字符串的一部分</font>
 
 ```bash
@@ -143,6 +158,7 @@ git config --global http.proxy http://user:passwd@proxyserverdomain:8080
 ## remote
 ```sh
 git remote add upstream git@github.com:koalamer/vsc-labeled-bookmarks.git
+git remote set-url origin new.example.git
 git checkout -b selectable-storage
 git reset upstream/selectable-storage --hard
 git push origin selectable-storage
@@ -150,7 +166,7 @@ git push origin selectable-storage
 ```
 ![Pasted image 20240607212834.png](/img/user/OperatingSystem/Linux/git/attachments/Pasted%20image%2020240607212834.png)
 
-## 分支
+## branch
 #branch
 
 ```bash
@@ -167,7 +183,7 @@ git branch -r --contains a1b2c3d4
 git branch -a --contains a1b2c3d4
 ```
 
-### tag
+## tag
 #tag
 ```sh
 # 打标签
@@ -239,7 +255,7 @@ git reset
 
 ```
 
-### push
+## push
 当前github开始支持PAT替换密码进行安全校验.对于提交代码需要输入用户名，密码需要用PAT
 生成PAT参考:
 https://github.com/settings/tokens
@@ -250,6 +266,18 @@ git config --global credential.helper store
 
 ```
 
+
+## git账户隔离
+
+比如针对gitee有多个账户，其中某个组织下面的仓库需要指定的账户进行登录才能查看，对于这类组织仓库可以单独维护一个.gitconfig来保持我们提交代码或者是拉取代码都是用的指定的账户信息和对应的密钥
+其中一个关键信息是git的用户名和email其实对于认证作用不大，主要作用是提交代码中commit带上相关信息，对于拉取代码提交代码都是需要用到指定密钥或者是输入密码之类的
+对于指定组织使用单独的git用户信息和ssh密钥，我们可以通过以文件夹形式进行隔离，在指定文件夹只下载指定组织的仓库代码，配置gitconfig使得该文件夹下面使用单独的认证信息，独立于全局的git设置
+
+如下图所示，在全局gitconfig设置文件中新增10-11行，这里表示在指定文件夹下面递归子文件夹，如果存在git仓库，会将11行指定的.gitconfig文件生效
+![Pasted image 20250411093418.png](/img/user/OperatingSystem/Linux/git/attachments/Pasted%20image%2020250411093418.png)
+
+注意这里局部gitconfig中第5行，这里指定密钥的原因在于，由于我们我们可能在本机存在多公钥密钥对，在gitee上面针对不同账户上传了不同的公钥，默认从Terminal登录gitee是从~/.ssh/下面每个密钥进行尝试，比如我们个人账户(全局账户)使用的是rsa密钥，但是在指定组织使用的是ed25519密钥，不指定密钥的话可能以错误的密钥进行登录gitee，导致无法提交或者拉起代码
+![Pasted image 20250411094020.png](/img/user/OperatingSystem/Linux/git/attachments/Pasted%20image%2020250411094020.png)
 
 
 
