@@ -155,3 +155,12 @@ brew --cellar pybind
 
 https://stackoverflow.com/questions/70168181/apple-clang-13-c20-module-support-missing
 https://clang.llvm.org/cxx_status.html
+
+
+### 安装解压工具
+
+```sh
+brew install carlocab/personal/unrar
+
+```
+

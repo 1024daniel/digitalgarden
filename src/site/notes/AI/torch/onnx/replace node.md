@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/AI/torch/onnx/replace node/","noteIcon":"3"}
+{"dg-publish":true,"permalink":"/AI/torch/onnx/replace node/","tags":["onnx"],"noteIcon":"3"}
 ---
 
 ```py

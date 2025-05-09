@@ -4,6 +4,31 @@
 
 ![timo-stern-EvcUtLF12XQ-unsplash.jpg|100%](/img/user/banner/timo-stern-EvcUtLF12XQ-unsplash.jpg)
 
+### 1.pull
+对于一个使用buidx构建的同时支持x86和arm的镜像在hub上拉取下来之后其实会根据你本地的架构拉取不同的layer
+对于hub上面的镜像有不同的层，有manifest等原数据文件记录了层之间的联系，类似下面
+```
+📦 Manifest Index: yourname/app:latest
+  ├── linux/amd64: layers (sha256:aaa, sha256:bbb)
+  └── linux/arm64: layers (sha256:ccc, sha256:ddd)
+```
+通过`docker manifest inspect yourname/app:latest`可以查看hub上面的镜像支持哪些架构
+![Pasted image 20250424100413.png](/img/user/CloudNative/docker/attachments/Pasted%20image%2020250424100413.png)
+如果想在x86下载arm的镜像到本地，需要强制指定arm
+```sh
+docker pull --platform linux/amd64 nginx
+```
+镜像拉取下来可以查看是否是指定架构的镜像文件
+
+> [!NOTE] 注意
+> docker manifest inspect看的是远程hub上的镜像元数据，docker image inspect看的是本地镜像的元数据
+
+```sh
+docker image inspect swr.cn-south-1.myhuaweicloud.com/ascendhub/mindie:1.0.0-800I-A2-py311-openeuler24.03-lts |grep Architecture
+
+```
+![Pasted image 20250424101959.png](/img/user/CloudNative/docker/attachments/Pasted%20image%2020250424101959.png)
+
 ### 1. docker的网络
 
 #### 1.1代理
@@ -64,7 +89,7 @@ networks:
 
 ### 2. Dockerfile的编写
 
-[[CloudNative/docker/dockerfile\|dockerfile]]
+[[CloudNative/docker/docker build/dockerfile\|dockerfile]]
 ```bash
 ARG base=debian:v0  # 指定基础镜像，给出默认值，可以从docker build指定值覆盖
 FROM $bash

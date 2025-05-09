@@ -18,7 +18,7 @@ Understanding the concepts of TP (Tensor Parallelism), DP (Data Parallelism), an
 
 - **Definition**: Data Parallelism involves replicating the entire model on each device and splitting the input data (batches) across devices. Each device processes a different subset of the data in parallel during training.
 
-- **Purpose**: DP is used to scale up training by distributing the workload of processing large batches of data across multiple devices. This can lead to faster training times and increased throughput.
+- **Purpose**: DP is used to scale up training by distributing the workload of processing large batches of data across multiple devices. This can  lead to faster training times and increased throughput.
 
 - **Implementation in Megatron**:
   - Megatron employs Data Parallelism by replicating the entire model on each device and dividing the input batches among the devices. Gradient updates are synchronized across devices to keep model parameters consistent during training.

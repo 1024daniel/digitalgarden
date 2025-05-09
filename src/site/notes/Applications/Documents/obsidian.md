@@ -44,3 +44,21 @@ obsidian自定义全局style
 
 https://www.latexlive.com/
 在线latex工具编写好公式直接复制使用即可
+
+行内数学公式用前后单独的`$`号进行包裹，独行数学公式用两个`$`进行包裹
+
+
+### 图片排版
+https://pkmer.cn/Pkmer-Docs/10-obsidian/obsidian%E5%A4%96%E8%A7%82/css-%E7%89%87%E6%AE%B5/obsidian%E6%A0%B7%E5%BC%8F-%E8%B0%83%E6%95%B4%E5%9B%BE%E7%89%87%E4%B8%8D%E5%90%8C%E5%B8%83%E5%B1%80%E6%A0%B7%E5%BC%8F/
+
+### 绘图Canvas
+
+移动画布快捷点 
+按住空格键鼠标左键移动画布 或者 直接鼠标中键移动画布
+
+canvas中card设置字体大小
+
+```html
+<p style="font-size: 24px">在此处输入您的文本</p>
+
+```

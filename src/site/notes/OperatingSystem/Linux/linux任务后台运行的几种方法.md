@@ -35,3 +35,11 @@ ctl d
 nohup bash task.sh &> task.log &
 
 ```
+
+挂起进程，但是不杀死进程。比如容器pod中某一个任务被kill掉会导致pod退出，如果想将该任务挂起，可以通过如下方法
+```sh
+kill -STOP <pid>
+# 恢复
+kill -CONT <pid>
+
+```

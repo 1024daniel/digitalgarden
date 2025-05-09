@@ -80,6 +80,7 @@ spec:
 
 
 ```sh
+kubectl delete pod -n kube-system pod_name
 kubectl delete -f a.yaml
 kubectl apply -f a.yaml
 
@@ -98,5 +99,25 @@ kubectl get pod my-pod -n my-namespace -o yaml
 
 # 查看当前node使用的container runtime， docker or containerd or ？
 kubectl describe node node_name | grep Runtime
+
+
+kubectl get namespaces
+kubectl get ns
+
+kubectl label nodes <node-name> <key>=<value>
+kubectl get pod my-pod --show-labels
+kubectl get node my-node --show-labels
+
+kubectl auth can-i label nodes
+
+```
+
+
+
+```sh
+# 获取所有的k8s pod状态
+kubectl get pods --all-namespaces -o wide
+kubectl get pods -A |grep wide
+
 
 ```

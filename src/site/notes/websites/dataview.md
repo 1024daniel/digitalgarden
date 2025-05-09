@@ -9,7 +9,7 @@ https://obsidian.rocks/dataview-in-obsidian-a-beginners-guide/
 https://blacksmithgu.github.io/obsidian-dataview/queries/structure/
 
 ```js title:"get the note number in a line"
-306
+411
 
 ```
 

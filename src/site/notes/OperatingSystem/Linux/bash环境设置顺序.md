@@ -43,6 +43,13 @@
 
 **您可以根据自己的需要修改这些配置文件。**
 
+设置Linux默认的交互式终端使用bash而非sh
+在~/.profile文件最后加上
+```sh
+exec /bin/bash
+
+```
+
 **参考资料：**
 
 * Linux bashrc profile等一系列文件的执行顺序: [https://www.cnblogs.com/lizm166/p/10662371.html](https://www.cnblogs.com/lizm166/p/10662371.html)

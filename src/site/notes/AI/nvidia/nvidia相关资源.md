@@ -67,7 +67,7 @@ nvcr.io/nvidia/pytorch:23.04-py3 /bin/bash
 
 ```sh
 $ nvidia-smi -q | grep -i nvlink
-        NVLink 0: Enabled
+        NVLink 0: Enabled2
         NVLink 1: Enabled
         Nvlink Speed: 25.78 GB/s
         Nvlink Counter: 0

@@ -56,7 +56,7 @@ $$
 
 这里
 $$
-\displaylines{w_{k} = \frac{1}{10000_{2k/d_{model}}}\\
+\displaylines{w_{k} = \frac{1}{10000^{2k/d_{model}}}\\
 i = 0,1,2,3,...,d_{model}/2 -1}
 $$
 
@@ -64,26 +64,21 @@ $$
 $$
 PE_{t}^{(i)} \in R^{d}
 $$
-表示token的位置向量
-
-$$d_{model}$$
-
-
-为token的维度，论文中为512，t表示第几个token，i表示该token位置向量的第几个维度
-
+表示token的位置向量$d_{model}$为token的维度，论文中为512，t表示第几个token，i表示该token位置向量的第几个维度
 根据[[sciences/math/sinusoid\|sinusoid]]相关函数可以知道一个token的位置向量的越高的维度的波长越长，token之间的在越高维度的差别不大，
 下面以可视化的形式展示这个效果，下图是序列长度50，位置编码维度128的位置编码的可视化结果：
 
 ![Pasted image 20240916194804.png](/img/user/AI/transformers/attachments/Pasted%20image%2020240916194804.png)
 
-可以发现，由于sin/cos函数的性质，位置向量的每一个值都位于[-1, 1]之间。同时，纵向来看，图的右半边几乎都是蓝色的，这是因为越往后的位置，频率越小，波长越长，所以不同的t对最终的结果影响不大。而越往左边走，颜色交替的频率越频繁。
+可以发现，由于sin/cos函数的性质，位置向量的每一个值都位于`[-1, 1]`之间。同时，纵向来看，图的右半边几乎都是蓝色的，这是因为越往后的位置，频率越小，波长越长，所以不同的t对最终的结果影响不大。而越往左边走，颜色交替的频率越频繁。
 
 这里函数中使用较大的系数来拉大波长，主要为了防止存在后面的token会和之前的token位置编码出现重合
-使用sin和cos来交替表示位置编码的相邻的维度主要是为了实现两个token的位置编码可以通过线性变换得到，这样位置编码的相对位置就有意义了
-$$PE_{t+\triangle t} = T_{\triangle t} *PE 
+使用sin和cos来交替表示位置编码的相邻的维度主要是为了实现两个token的位置编码可以通过线性变换得到，这样位置编码的相对位置就有意义了$$PE_{t+\triangle t} = T_{\triangle t} *PE 
 _{t}$$
 
 这里T表示线性变换矩阵，正是由于我们使用sin和cos交叉表示位置编码各个维度，通过向量的线性旋转变换公式可以得到
 $$\binom{sin(t+\triangle t)}{cos(t+\triangle t)} = 
 \binom{cos\triangle t \quad  sin\triangle{t}}{-sin\triangle{t} \quad cos\triangle t} 
 \binom{sint}{cost}$$
+
+

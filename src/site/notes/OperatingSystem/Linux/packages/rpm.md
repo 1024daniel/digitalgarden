@@ -63,3 +63,10 @@ rpm2cpio xxx.rpm | cpio -div
 ```
 
 
+### 查看本地有哪些repo
+```sh
+yum repolist
+
+```
+
+

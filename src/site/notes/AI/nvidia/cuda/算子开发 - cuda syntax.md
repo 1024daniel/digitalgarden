@@ -2,12 +2,15 @@
 {"dg-publish":true,"permalink":"/AI/nvidia/cuda/算子开发 - cuda syntax/","noteIcon":"3"}
 ---
 
+
+
 #cuda
 ## 1.关键词介绍
 
 ### 1.1 Declaring functions
 
 Global functions are also called "kernels". It's the functions that you may call from the host side using CUDA kernel call semantics (`<<<...>>>`).
+![Pasted image 20241012232953.png|L|450](/img/user/AI/transformers/attachments/Pasted%20image%2020241012232953.png)
 
 |                   |                                                                  |
 | ----------------- | ---------------------------------------------------------------- |

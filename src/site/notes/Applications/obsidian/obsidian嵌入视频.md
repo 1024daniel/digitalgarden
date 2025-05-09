@@ -9,6 +9,7 @@ obsidian嵌入视频可以直接通过`![]()`的格式，这种格式本地可�
 ![](https://www.youtube.com/watch?v=wjZofJX0v4M)
 
 ### iframe格式:
+#### youtube视频
 
 <div style="position: relative; width: 100%; max-width: 800px; height: 0; padding-bottom: 56.25%; margin: 0 auto;">
     <iframe 
@@ -59,3 +60,15 @@ iframe参数详解:
 8. border: none;
 
 • 移除 iframe 外框的边框。
+
+#### bilibili视频
+
+<div style="position: relative; width: 100%; max-width: 800px; height: 0; padding-bottom: 56.25%; margin: 0 auto;">
+    <iframe 
+        src="https://player.bilibili.com/player.html?bvid=BV1yo4y1U7Q3&autoplay=0" 
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
+        scrolling="no" 
+        frameborder="no" 
+        allowfullscreen="true">
+    </iframe>
+</div>

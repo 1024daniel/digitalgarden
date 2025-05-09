@@ -41,3 +41,8 @@ XLOOKUP(1,MMULT(--(RANGE=S22),SEQUENCE(COLUMNS(RANGE),1,1,0)),RETURNARRAY)
 ```
 SUBTOTAL函数会忽略被筛选掉的行，只计算当前显示的行的和。
 `9`代表“求和”功能。
+
+### 6.计算文本长度
+```
+=LEN(A1)
+```
