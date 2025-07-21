@@ -211,3 +211,28 @@ clear 1
 
 https://stackoverflow.com/questions/16731115/how-to-debug-a-python-segmentation-fault
 https://blog.csdn.net/ARPOSPF/article/details/130248065
+
+
+### 子进程debug
+对于部分子进程调用，由于进程的stdout和stdin没有和终端对接好会导致pdb出现类似`bad file descriptor`的报错
+对于这类问题可以进行以下操作
+手动指定stdin和stdout对接到terminal
+```python
+import pdb
+import sys
+
+pdb.Pdb(stdin=sys.__stdin__, stdout=sys.__stdout__).set_trace()
+
+```
+指定rpdb来进行远程调试，默认RPDB_HOST(127.0.0.1),RPDB_PORT(4444)
+```python
+import os
+os.environ["RPDB_HOST"] = "0.0.0.0"
+os.environ["RPDB_PORT"] = "5555"
+
+import rpdb
+rpdb.set_trace()
+
+```
+之后另一个终端进行调试
+`telnet <RPDB_HOST> <RPDB_PORT>`
