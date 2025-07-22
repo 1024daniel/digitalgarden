@@ -77,6 +77,9 @@ pip install -e .
 # or
 python setup.py install
 
+# 对于pyproject.toml中要求的依赖即使环境中存在也会导致找不到的错误，原因是默认会## **构建隔离机制（PEP 517）**，需要显式指定不构建隔离才会先从环境中找到依赖
+pip install -e . --no-build-isolation
+
 ```
 
 ![Pasted image 20231028220804.png|80%](/img/user/pics/Pasted%20image%2020231028220804.png)

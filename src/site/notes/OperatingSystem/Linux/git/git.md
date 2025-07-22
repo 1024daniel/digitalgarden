@@ -152,6 +152,11 @@ git在windows设置代理,注意<font color="#00b050">这里设置的代理要�
 
 ```bash
 git config --global http.proxy http://user:passwd@proxyserverdomain:8080
+# 如果对于公司内部分域名不需要代理的，可以针对指定域名来禁用代理的同时不会影响其他的域名访问
+git config --global http.https://codehub-g.huawei.com.proxy ""
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+git config --global --unset core.gitproxy
 ```
 <font color="#00b050">对于用户名或者密码存在特殊字符的话需要用URL编码，比如\*需要换成%2A</font>
 

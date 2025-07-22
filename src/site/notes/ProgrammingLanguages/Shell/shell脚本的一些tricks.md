@@ -206,3 +206,11 @@ cd $CURRENT_DIR
 
 
 ```
+
+### 16.文件压缩 解压
+```sh
+# 指定密码压缩
+zip -r -e logs.zip logs
+unzip
+
+```

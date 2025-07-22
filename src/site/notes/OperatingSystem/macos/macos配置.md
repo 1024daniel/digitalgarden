@@ -164,3 +164,27 @@ brew install carlocab/personal/unrar
 
 ```
 
+
+### 终端设置调用历史记录时候设置鼠标默认行尾
+
+```sh
+# 保持上/下方向键搜索历史命令，同时光标跳到行尾
+function move_to_end_after_history() {
+  zle .history-beginning-search-backward
+  zle end-of-line
+}
+
+function move_to_end_after_history_forward() {
+  zle .history-beginning-search-forward
+  zle end-of-line
+}
+
+# 绑定上/下方向键
+zle -N move_to_end_after_history
+zle -N move_to_end_after_history_forward
+bindkey '^[[A' move_to_end_after_history
+bindkey '^[[B' move_to_end_after_history_forward
+
+```
+将上述代码加在`~/.zshrc`里面, `~/.zshrc`主要是设置终端交互式配置的文件
+

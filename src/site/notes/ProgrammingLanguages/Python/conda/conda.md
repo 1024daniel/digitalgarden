@@ -2,11 +2,23 @@
 {"dg-publish":true,"permalink":"/ProgrammingLanguages/Python/conda/conda/","noteIcon":"3"}
 ---
 
+
 conda和pip的区别:https://stackoverflow.com/a/20994790/14637253
 conda和miniconda获取链接
 https://repo.anaconda.com/archive/
 https://repo.anaconda.com/miniconda/
 
+
+### conda配置
+
+```sh
+
+conda config --show-sources
+conda config --show proxy_servers
+conda config --show --json
+conda config --show channels
+
+```
 
 ### conda 安装
 
@@ -42,6 +54,7 @@ conda create -n modellink python=3.8
 conda info
 conda env list
 conda activate modellink
+conda remove --name <env-name> --all
 
 
 

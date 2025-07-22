@@ -22,7 +22,7 @@ kubectl get events -n <namespace> --sort-by='.lastTimestamp'
 # 给节点上taint，不允许pod调度到该node，除非pod能tolerate这个taint
 kubectl taint nodes node01 node-role.kubernetes.io/unschedulable=:NoSchedule
 # 解除taint
-kubectl taint nodes <node-name> node-role.kubernetes.io/unschedulable-
+kubectl taint nodes <node-name> node-role.kubernetes.io/NoSchedule-
 # 将节点设置为不可调度，阻止新pod调度上来，不妨碍已有pod
 kubectl cordon <node-name>
 # 驱逐当前node上已有的pod到其他nodes上

@@ -38,7 +38,7 @@ docker和maven，npm类似，代理和系统代理不一样需要单独配置，
 ![Pasted image 20230922224955.png|100%](/img/user/pics/Pasted%20image%2020230922224955.png)
 /etc/systemd/system/docker.service.d/http-proxy.conf
 
-![Pasted image 20230922225041.png|100%](/img/user/pics/Pasted%20image%2020230922225041.png)
+   
 编辑添加代理之后可以通过以下命令生效并查看是否成功生效
 
 ```bash
@@ -134,6 +134,8 @@ docker tag imagehash newrepo:newtag
 # 查看容器的基础镜像
 docker inspect --format='{{.Config.Image}}' <container_name>
 docker ps --format "table {{.Names}}\t{{.ID}}\t{{.Image}}" 
+# 查看镜像
+docker image inspect <image-name> --format='{{.Architecture}}'
 ```
 
 export/import与save/load的区别

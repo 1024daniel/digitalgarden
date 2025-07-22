@@ -236,3 +236,14 @@ rpdb.set_trace()
 ```
 之后另一个终端进行调试
 `telnet <RPDB_HOST> <RPDB_PORT>`
+
+### 三. Just print
+打印函数的参数列表，print中使用flush=True来强制输出，防止缓存之类的导致输出不及时
+```python
+def my_func(self, a, b, **kwargs):
+	import inspect
+	frame = inspect.currentframe()
+	args,_,_, values = inspect.getargvalues(frame)
+	print({arg:values[arg] for arg in args}, flush=True)
+
+```

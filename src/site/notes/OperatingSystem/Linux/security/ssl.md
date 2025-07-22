@@ -3,6 +3,17 @@
 ---
 
 #ssl 
+
+```cardlink
+url: https://www.linkedin.com/pulse/beginning-ssl-platform-engineer-isaac-carrington/?trackingId=B9b8rRTIQRWO8FtCLnQnGA%3D%3D
+title: "Beginning with SSL for a Platform Engineer"
+description: "As an aspiring Software Engineer at Uni the infra stuff was mostly a mystical dark art to me. We covered it, but not enough for me to feel comfortable with it and I thought I'd be able to skip through my career without ever needing solid infra skills."
+host: www.linkedin.com
+favicon: https://static.licdn.com/aero-v1/sc/h/al2o9zrvru7aqj8e1x2rzsrca
+image: https://media.licdn.com/dms/image/v2/C5612AQEa9clxy0lCvA/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1647679243384?e=2147483647&v=beta&t=wTJKCE1c9Qb0_vJwGL_vEM3qcB2yMUyGCM8ivkPDrIg
+```
+
+
 对于公司内网服务器环境，如果存在获取指定网站域名的时候存在错误`curl: (60) SSL certificate problem: self signed certificate in certificate chain`, 可能是由于公司网关的隔离，需要客户端安装网关中间人的证书才能与外网建立SSL连接，即使不配置SSL证书，通过关闭SSL验证，设置可信站点或者指定使用的证书也可以建立SSL连接，但不是所有的应用都提供类似功能(比如一些python代码第三方包request之类的调用链比较长的，可能很难避免)
 Git可以通过使用如下方式关闭SSL验证，但是Git LFS不共享此配置
 ```sh
