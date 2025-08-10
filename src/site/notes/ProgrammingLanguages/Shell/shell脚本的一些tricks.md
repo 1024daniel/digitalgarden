@@ -198,11 +198,11 @@ ll|awk -F ' ' '{print $10}'
 
 ```sh
 # 保证从什么路径执行当前脚本，脚本环境的当前路径为脚本所在路径文件夹
-CURRENT_DIR=$(
+SCRIPT_DIR=$(
     cd $(dirname ${BASH_SOURCE:-$0})
     pwd
 )
-cd $CURRENT_DIR
+CALLER_DIR=$PWD
 
 
 ```
@@ -212,5 +212,24 @@ cd $CURRENT_DIR
 # 指定密码压缩
 zip -r -e logs.zip logs
 unzip
+
+```
+
+
+### 17. 拷贝软连接
+```sh
+rsync -l link_file w1:`pwd`
+
+```
+
+
+### 18.patch
+
+```sh
+patch -p1 < diff.patch
+patch -p1 -R diff.patch
+# 保持交互模式，键盘可用
+patch -p1 -R -i diff.patch
+git apply  -R diff.patch
 
 ```
