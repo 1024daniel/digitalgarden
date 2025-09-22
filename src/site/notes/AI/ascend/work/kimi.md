@@ -66,7 +66,7 @@ def ascend_attention(
 
 
 
-类似rednots/dots.cor的改法直接在权重config.json的指定使用ascend_fa，在modeling文件添加实现函数，但是拉起出现报错
+类似rednots/dots.cor的改法直接在权重config.json的指定使用ascend_fa，在modeling文件添加实现函数，但是拉起出现报错(**后续测试验证，权重config.json指定attn implemenation,实现只需要放在vllm的models中，transformers中不需要**)
 ![Pasted image 20250922163712.png](/img/user/AI/ascend/work/attachments/Pasted%20image%2020250922163712.png)
 
 ![Pasted image 20250922163741.png](/img/user/AI/ascend/work/attachments/Pasted%20image%2020250922163741.png)
