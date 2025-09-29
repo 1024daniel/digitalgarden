@@ -85,3 +85,12 @@ host: gitee.com
 image: https://gitee.com/static/images/logo_themecolor_circle.png
 ```
 AscendFFmpegPlugin插件，插件如果功能正常的话针对原始脚本修改会更小
+
+测试数据集:
+
+```cardlink
+url: https://telecommunication-telemedia-assessment.github.io/AVT-VQDB-UHD-1/test_1.html
+title: "Test 1 Videos"
+description: "This site contains the Test 1 videos"
+host: telecommunication-telemedia-assessment.github.io
+```
