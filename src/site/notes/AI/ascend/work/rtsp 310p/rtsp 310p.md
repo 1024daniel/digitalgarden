@@ -373,15 +373,53 @@ ffmpeg -loglevel debug -hwaccel ascend -c:v h264_ascend -i output.264 -c:v h264_
 但是存在一个问题，第二个命令输出的文件n8.0输出文件大小是152M，n4.4.1的为30M，排查发现flush未注册到解码器中(上图已添加)
 添加flush编译安装之后问题依旧
 ```sh
+ffmpeg -loglevel debug -f rawvideo -pix_fmt nv12 -s 1280x720 -r 60 \
+       -i /dev/zero -c:v h264_ascend -frames:v 600 test.264
+    
 ffmpeg -loglevel debug -hwaccel ascend -c:v h264_ascend -i output.264 -f null -
 
 ffmpeg -loglevel debug -hwaccel ascend -c:v h264_ascend -i output.264 -c:v h264_ascend out.264
 
-ffmpeg -loglevel debug -f rawvideo -pix_fmt nv12 -s 1280x720 -r 60 \
-       -i /dev/zero -c:v h264_ascend -frames:v 600 test.264
+
+```
+测试发现都用n8.0的不指定输出到文件，600 packets muxed对的上，但是指定输出文件之后就是8000 packets muxed, 且日志中存在相对于n4.4.1或者不指定输出文件多出来的关键字"12 dup!"，搜索关键字看到
+是video_sync_process中根据pts进行补充帧的函数，
+-f null 模式不建立输出 filter，也不进行 vsync 计算
+
+Demuxer → Decoder → FilterGraph →  **OutputFilter → Encoder** → Muxer
+
+```sh
+ffmpeg -hwaccel ascend -c:v h264_ascend -i input.264 \
+  -c:v h264_ascend -fps_mode passthrough out.264
+
+```
+passthrought测试正常，说明问题可以确定是video_sync_process函数
+本地播放文件内容是正常的
+
+帧同步补帧通常和pts等字段有关, 新版本frame少了一些字段，为了适配进行了删除，需要分析影响
+```sh
+get_vdec_frame_info
+
 ```
 
+针对帧同步需要分析n4.4.1和n8.0版本相关函数
+n4.4.1对应关键函数为`do_video_out`
+n8.0为`video_sync_process`
+而关键的字段就是duration
 
+```cardlink
+url: https://www.hiascend.com/document/detail/zh/canncommercial/82RC1/API/ispapi/ispdevapi_0032.html
+title: "hi_video_frame_info-公共数据类型-ISP系统控制及3A算法注册-ISP图像调优接口-CANN商用版8.2.RC1开发文档-昇腾社区"
+description: "<!DOCTYPE html> hi_video_frame_info 说明定义视频图像帧信息结构体。 定义typedef struct { hi_video_frame v_frame; hi_u32 pool_id; hi_mod_id mod_id; } hi_video_frame_info; 成员 成员名称 描述 v_frame 视频图像帧属性结构体。 pool_id 视频缓存池ID，预"
+host: www.hiascend.com
+favicon: https://www.hiascend.com/_static3/favicon.ico
+image: https://www.hiascend.com/_static3/logo.BmJjMz5z.png
+```
+
+cann中hi_video_fram中无duration，但是新版本video_sync_process依赖duration
+
+![Pasted image 20251017163738.png](/img/user/AI/ascend/work/rtsp%20310p/attachments/Pasted%20image%2020251017163738.png)
+在himpi_get_frame设置frame->duration=0之后问题解决?!
 ### ffmpeg OPAQUE_REF 编解码支持解析
 
 查看ffmpeg n8.0的libavcodec/nvenc_h264.c编码注册代码
@@ -389,4 +427,16 @@ ffmpeg -loglevel debug -f rawvideo -pix_fmt nv12 -s 1280x720 -r 60 \
 可以看到编码器对应的支持的特性通过`.p.capabilities`进行指定
 
 
-	
+OPAQUE_REF主要依靠ffmpeg框架侧能力，设备侧只需要保证这块私有数据引用能正常传递
+该字段主要是解决h264编解码DTS(Decoding TimeStamp解码顺序)和PTS(Presentation TimeStamp显示顺序)顺序不一致, 
+
+| 编码顺序 | 解码顺序 | 显示顺序 |
+| ---- | ---- | ---- |
+| I0   | I0   | I0   |
+| B1   | P3   | B1   |
+| B2   | B1   | B2   |
+| P3   | B2   | P3   |
+
+opaque ref似乎基本都是框架侧的工作，直接基于当前程序进行测试
+原来程序中默认是`YUV420P` to `BGR24`加速, 直接跑会出现`No accelerated colorspace conversion found from yuv420p to bgr24`，这个可能和解码器注册ff_h264_ascend_decoder CODEC_PIXFMTS_ARRAY制定的几个格式不符合，ascend解码后默认是`AV_PIX_FMT_NV12`，程序中改为`AV_PIX_FMT_NV12`,之后没有相关提示，
+但是出现`av_hwframe_transfer_data失败`
