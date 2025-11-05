@@ -10,7 +10,7 @@ Aggresive 大模型前向推理比较消耗算力资源，make every token expen
 不过对于验证draft model生产的k个tokens是否符合消耗的时间和前向生成一个token消耗的时间差不多，记为$T_{L}$
 则性能提升为
 $$
-SeepUp =  \frac{T_{L}}{(\frac{T_{s}+T_{L}}{p*k})} =  \frac{p*k*T_{L}}{T_{s}+T_{L}} \approx  p*k
+SeepUp =  \frac{T_{L}}{(\frac{T_{s}+T_{L}}{p*k})} =  \frac{p*k*T_{L}}{T_{s}+T_{L}} \approx  {\color{Green}{p*k}}
 $$
 
 
