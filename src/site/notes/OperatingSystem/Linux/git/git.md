@@ -35,6 +35,16 @@ git checkout master     # would normally switch the working copy to
 
 git checkout -- master  # discard uncommitted changes to the _file_ "master"
 
+# 本地checkout到指定仓库的分支，个人仓库同步分支
+git checkout pr-flashcommv1 lyh/flashcommv1
+git push origin pr-flashcommv1
+
+#acl 
+git fecth --tags
+git checkout tags/v5.0 #防止和分支 tag有冲突
+git checkout -b my-v5.0 v5.0
+
+
 ```
 
 
@@ -62,6 +72,21 @@ git push
 
 ```
 
+## ignore
+忽略所有层级的`__pycache__`文件夹内容以及pyc文件,对应的ignore文件
+```sh
+**/__pycache__/
+*.pyc
+
+```
+如果vscode显示对应的文件git还是存在，可能是gitignore文件中添加ignore的文件之前就已经git add进行追踪了，需要主动进行remove from track
+```sh
+
+git rm -r --cached **/__pycache__/
+git rm -r --cached *.pyc
+git commit -m "Remove __pycache__ and .pyc from tracking"
+
+```
 ## commit
 
 ```sh
@@ -69,6 +94,8 @@ git push
 git commit --amend
 # 修改上一次的提交人信息
 git commit --amend --author="new name <>new.email@example.com" --no-edit
+## use pre-commit to format the files you add before commit
+pre-commit run --file files/you/add
 
 
 ```
@@ -168,6 +195,8 @@ git checkout -b selectable-storage
 git reset upstream/selectable-storage --hard
 git push origin selectable-storage
 
+git remote remove upstream
+
 ```
 ![Pasted image 20240607212834.png](/img/user/OperatingSystem/Linux/git/attachments/Pasted%20image%2020240607212834.png)
 
@@ -223,6 +252,11 @@ git push origin --tags
 # include untracked files
 git stash -u
 git stash save "stash note"
+
+## stash部分指定文件
+git stash push -m "msg" path/to/file1 path/to/file2
+git stash push -um 'msg' path/to/newfile
+
 git stash list
 ## apply the latest stash, and keep the stash
 git stash apply
@@ -231,11 +265,20 @@ git stash apply stash@{2}
 ## apply the lastest stash but drop it
 git stash pop
 ## apply the specific stash but drop it
-git stash pop stash@{3}
+	git stash pop stash@{3}win`
+	
 ## drop the specific stash
 git stash drop stash@{2}
 ## clear all stashes
 git stash clear
+
+
+git stash show stash@{0}
+git stash show -p stash@{0}
+git log -p -1 stash@{0}
+git diff stash@{0} -- src/main.py
+
+git restore path/to/file
 
 ```
 
@@ -250,6 +293,17 @@ git rebase -i HEAD~4
 git config pull.rebase false
 # rebase模式: 当本地和远程都有一个commit没有同步，rebase之后不会创建merge commit
 git config pull.rebase true
+# 对于部分社区提交代码的话DCO一般需commit带上邮箱，如果已提交的commit可通过以下代码进行修改
+git rebase HEAD~5 --signoff
+git push --force-with-lease
+# 设置自动commit提交带上email签名
+git config commit.gpgsign false  # 确保不要干扰签名
+git config format.signoff true   # 默认添加 Signed-off-by
+
+
+### 如果远程只有一个commit，想要将本地新增的一个commit合入到最初的commit，需要指定root才能获取到全量的commit信息进行rebase
+git rebase -i --root
+
 ```
 ![Pasted image 20250207000434.png](/img/user/OperatingSystem/Linux/git/attachments/Pasted%20image%2020250207000434.png)
 
@@ -269,10 +323,27 @@ https://github.com/settings/tokens
 ```sh
 git config --global credential.helper store
 
+
+# 把本地 local_feature 推送到远程 new_feature
+git push origin local_feature:new_feature
+
+# 如果本地分支是新分支，直接push origin，远程会新建同步分支
+git push origin
+
 ```
 
 
-## git账户隔离
+### apply
+
+```sh
+git apply diff.patch
+
+git apply -R diff.patch
+
+```
+
+# 案例 
+### git账户隔离
 
 比如针对gitee有多个账户，其中某个组织下面的仓库需要指定的账户进行登录才能查看，对于这类组织仓库可以单独维护一个.gitconfig来保持我们提交代码或者是拉取代码都是用的指定的账户信息和对应的密钥
 其中一个关键信息是git的用户名和email其实对于认证作用不大，主要作用是提交代码中commit带上相关信息，对于拉取代码提交代码都是需要用到指定密钥或者是输入密码之类的
@@ -283,6 +354,53 @@ git config --global credential.helper store
 
 注意这里局部gitconfig中第5行，这里指定密钥的原因在于，由于我们我们可能在本机存在多公钥密钥对，在gitee上面针对不同账户上传了不同的公钥，默认从Terminal登录gitee是从~/.ssh/下面每个密钥进行尝试，比如我们个人账户(全局账户)使用的是rsa密钥，但是在指定组织使用的是ed25519密钥，不指定密钥的话可能以错误的密钥进行登录gitee，导致无法提交或者拉起代码
 ![Pasted image 20250411094020.png](/img/user/OperatingSystem/Linux/git/attachments/Pasted%20image%2020250411094020.png)
+
+### 本地代码对比
+
+如果想要对比两个文件夹内容更改
+```shell
+cd /path/to/base
+git init
+git add .
+git commit -m 'base'
+
+git clone /path/to/base /path/to/workspace
+cp -rf /path/to/base/* /path/to/workspace/*
+```
+
+### 代码提交量
+
+```sh
+uname=$1
+author_stats=$(git log --author="$uname" --numstat --pretty="%H" \
+  | awk 'NF==3 {adds+=$1; subs+=$2} END {print adds,subs}')
+
+coauthor_stats=$(git log --grep="Co-authored-by: $uname" --numstat --pretty="%H" \
+  | awk 'NF==3 {adds+=$1; subs+=$2} END {print adds,subs}')
+
+author_add=$(echo $author_stats | cut -d' ' -f1)
+author_del=$(echo $author_stats | cut -d' ' -f2)
+coauthor_add=$(echo $coauthor_stats | cut -d' ' -f1)
+coauthor_del=$(echo $coauthor_stats | cut -d' ' -f2)
+
+echo "Author added: $author_add, deleted: $author_del"
+echo "Co-author added: $coauthor_add, deleted: $coauthor_del"
+echo "Total added: $((author_add+coauthor_add)), deleted: $((author_del+coauthor_del))"
+
+```
+
+
+### 修改内容生成patch文件
+
+```sh
+# -N会将修改中新增文件这些untract的文件让git文件存在，之后git diff就会看到新增文件内容
+git add -N . 
+# 这里diff会忽略.gitignore指定的文件，但是会包含除此之外的文件包含二进制文件
+git diff HEAD --binary > n8.0.patch
+
+```
+
+
 
 
 
