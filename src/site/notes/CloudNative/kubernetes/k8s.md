@@ -107,6 +107,7 @@ kubectl get ns
 kubectl label nodes <node-name> <key>=<value>
 kubectl get pod my-pod --show-labels
 kubectl get node my-node --show-labels
+kubectl get nodes -A -owide --show-labels
 
 kubectl auth can-i label nodes
 
@@ -118,6 +119,57 @@ kubectl auth can-i label nodes
 # 获取所有的k8s pod状态
 kubectl get pods --all-namespaces -o wide
 kubectl get pods -A |grep wide
+
+
+
+# 从节点查看主节点ip
+cat /etc/kubernetes/kubelet.conf | grep server
+
+
+kubectl get pg -A
+kubectl describe pg pending_pg_name -n namespace_name
+
+```
+
+### K8S环境清理
+```sh
+#!/bin/bash
+set -e
+
+echo "==== Stopping kubelet & container runtime ===="
+systemctl stop kubelet || true
+systemctl stop containerd || true
+systemctl stop docker || true
+
+echo "==== kubeadm reset ===="
+kubeadm reset -f || true
+
+echo "==== Removing Kubernetes directories ===="
+rm -rf /etc/kubernetes
+rm -rf /var/lib/etcd
+rm -rf /var/lib/kubelet/*
+rm -rf /var/lib/cni
+rm -rf /etc/cni/net.d
+
+echo "==== Removing network leftovers ===="
+ip link delete cni0 >/dev/null 2>&1 || true
+ip link delete flannel.1 >/dev/null 2>&1 || true
+ip link delete docker0 >/dev/null 2>&1 || true
+
+echo "==== Reloading systemd ===="
+systemctl daemon-reload
+
+echo "==== Make sure kubelet will not auto-start ===="
+systemctl disable kubelet || true
+
+echo "==== Checking port usage ===="
+for p in 6443 10250 10257 10259; do
+    echo "Port $p:"
+    lsof -i:$p || echo "  Not in use"
+done
+
+echo "==== Kubernetes cleanup completed ===="
+echo "You can now run: kubeadm init ..."
 
 
 ```
