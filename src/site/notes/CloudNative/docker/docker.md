@@ -179,7 +179,19 @@ docker info -f '{{ .DockerRootDir }}'
 ```sh
 rsync -aP /var/lib/docker /data/
 
+rsync -aHXS --numeric-ids /var/lib/docker/ /mnt/new_docker/
+
 ```
+- **-a**：保留权限、时间戳、符号链接
+    
+- **-H**：保留硬链接（overlay2 必须）
+    
+- **-X**：保留扩展属性（有些镜像需要）
+    
+- **-S**：保留稀疏文件结构
+    
+- **--numeric-ids**：防止 UID/GID 错位
+
 `vim /etc/docker/daemon.json`
 ```json
 { 
@@ -253,7 +265,24 @@ docker ps -q | xargs docker inspect --format '{{.Id}}: {{.HostConfig.Privileged}
 ```sh
 docker ps -s
 
+docker system df
+
+```
+
+### 12.查看主机进程是哪个容器的
+![Pasted image 20250804173240.png](/img/user/CloudNative/docker/attachments/Pasted%20image%2020250804173240.png)
+
+```sh
+cat /proc/<pid>/cgroup
 ```
 
 
 ##  Docker Volume
+
+
+## 查看进程是属于哪个容器
+```sh
+docker ps --format "{{.ID}} {{.Names}}" | while read container_id container_name; do docker top $container_id -eo pid,cmd | awk -v container=$container_name '{print container, $0}'; done | grep <process_id>
+
+
+```
