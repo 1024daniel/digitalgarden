@@ -62,6 +62,39 @@ pytest 会在运行前：
         
     - 把返回值注入到对应参数位置
 
+显式申明依赖注入, 不会意外影响不相关的测试函数
+```python
+@pytest.fixture(scope="function") 
+def setup_device_properties():
+    init_device_properties_triton()
+    yield
+    
+@pytest.mark.parametrize("max_spec_len", [1, 2, 3])
+@pytest.mark.parametrize("vocab_size", [151_936])
+@pytest.mark.parametrize("batch_size", [1, 8, 32, 64, 128, 256, 512, 1024])
+@torch.inference_mode()
+def test_rejection_random_sample(setup_device_properties,max_spec_len, vocab_size, batch_size):
+
+
+```
+
+设置默认每个test都默认依赖
+```python
+@pytest.fixture(scope="function", autouse=True) 
+def setup_device_properties():
+    init_device_properties_triton()
+    yield
+    
+@pytest.mark.parametrize("max_spec_len", [1, 2, 3])
+@pytest.mark.parametrize("vocab_size", [151_936])
+@pytest.mark.parametrize("batch_size", [1, 8, 32, 64, 128, 256, 512, 1024])
+@torch.inference_mode()
+def test_rejection_random_sample(max_spec_len, vocab_size, batch_size):
+
+```
+
+
+
 
 ### patch
 
@@ -110,6 +143,13 @@ dummy_A.property_in_instance =1      ### not ok
 def test_add(a, b, expected):
     assert a + b == expected
 
+#堆叠
+@pytest.mark.parametrize("a", [1, 2, 3])
+@pytest.mark.parametrize("b", [1, 2, 3])
+@pytest.mark.parametrize("expected", [1, 2, 3])
+def test_add(a, b, expected):
+    assert a + b == expected
+
 ```
 
 ### side_effect
@@ -140,3 +180,23 @@ image: https://opengraph.githubassets.com/454a18dbbb94c695f8e59625140427fef1ff9b
 我这里只是简单想要给两个dump func当做参数传递，来完成执行init_module,其中init_module是进行patch了的，也就是说最后实际dump func只是为了满足函数签名要求，并不需要执行函数体，我们本意也是不需要执行，最后导致这两个函数体miss
 通过以下操作，将init_module的mock的side_effect设置为一个局部函数，局部函数内进行调用我们miss的函数，从而可以完成全部调用
 ![Pasted image 20250728225143.png](/img/user/ProgrammingLanguages/Python/UT/attachments/Pasted%20image%2020250728225143.png)
+
+
+## 命令行
+```sh
+pytest -s -vv tests/test_example.py
+pytest -s -vv tests/test_example.py::test_func
+pytest -s -vv tests/test_example.py::test_a tests/test_example.py::test_b
+pytest -s -vv tests/test_example.py::TestMyClass::test_method
+
+# 模糊匹配函数和类
+pytest -s -vv tests/test_example.py -k "func"
+
+# 指定case
+pytest test.py::test_func[False-True-3-eagle3] -vv -s
+
+
+
+
+
+```
