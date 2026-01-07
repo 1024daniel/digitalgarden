@@ -275,14 +275,37 @@ docker system df
 ```sh
 cat /proc/<pid>/cgroup
 ```
+或者直接一键命令
+```sh
+docker ps --format "{{.ID}} {{.Names}}" | while read container_id container_name; do docker top $container_id -eo pid,cmd | awk -v container=$container_name '{print container, $0}'; done | grep <process_id>
+
+```
+
+### 13.docker命令的自动补全
+
+```sh
+# 服务器一般都会存在bash-completion组件，没有的话需要安装
+apt update
+apt install -y bash-completion
+yum install -y bash-completion
+
+```
+
+docker补全脚本在
+`/usr/share/bash-completion/completions/docker`或者`/etc/bash_completion.d/docker`
+如果没有的话可以通过
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/docker/cli/master/contrib/completion/bash/docker \
+  -o /etc/bash_completion.d/docker
+  
+yum install -y docker-ce-cli
+
+```
 
 
 ##  Docker Volume
 
 
-## 查看进程是属于哪个容器
-```sh
-docker ps --format "{{.ID}} {{.Names}}" | while read container_id container_name; do docker top $container_id -eo pid,cmd | awk -v container=$container_name '{print container, $0}'; done | grep <process_id>
 
 
-```
