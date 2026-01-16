@@ -4,6 +4,21 @@
 
 #python/pip #pip
 ![freestocks-flOVXZWbjJ4-unsplash.jpg|100%](/img/user/banner/freestocks-flOVXZWbjJ4-unsplash.jpg)
+### python安装
+```sh
+apt update
+apt install python3.11-full
+# --install <link> <name> <path> <priority>
+update-alternatives \
+  --install /usr/bin/python3 python3 /usr/bin/python3.11 311
+  sudo update-alternatives --config python3
+#一个name可以用多个path，每个path都有不同的优先级，比如python3这个name有python3.10,python3.11
+update-alternatives --display python3
+update-alternatives --config python3
+apt install python-is-python3
+apt install python3-pip 
+
+```
 ### pip常用命令
 pip配置文件:`~/.pip/pip.config`， `~/.config/pip/pip.conf(linux)`, `%APPDATA/pip/pip.ini(windows)`，配置示例，pip使用系统代理就行
 也可以直接使用`pip config edit --editor vim`或者`export EDITOR=vim; pip config edit` 或者在pip.conf中global标签下面加上`EDITOR=vim`之后`pip config edit`直接编辑
@@ -73,6 +88,8 @@ editable project
 
 
 ```bash
+# editable安装方式可能导致系统存在多个版本，虽然pip list -v显示的是期望的版本路径，但是可能存在跑的时候是别的版本，最好先卸载旧版本
+pip uninstall 
 pip install -e .
 # or
 python setup.py install
@@ -97,3 +114,26 @@ pip download megatron==0.1 --python-version 3.9 --no-deps
 
 
 conda环境使用参考:[[ProgrammingLanguages/Python/conda/conda\|conda]]
+
+### 容器内更改容器系统路径改为映射路径
+
+对于镜像内自带的vllm/vllm-ascend包，如果需要方便定位问题或者进行开发，最好是更改路径到host映射路径，这样可以方便进行vscode直接debug
+首先pip list -v|grep vllm查看当前源码以及meta data的路径
+
+> [!NOTE] Attention
+> 一般-e安装的话direct_url.json里面的路径是/tmp，也就是构建中间路径，构建完不存在，一般不改也行，不是本地源码安装的话direct_url.json中是写死了路径，只设置PYTHONPATH不会生效，需要同时修改direct_url.json(只对pip有关)， import的话需要同时拷贝pth文件，finder.py文件，修改里面路径
+> pth文件只有在site-packages下才生效，直接修改里面的路径就可以
+
+
+
+```sh
+cp /vllm-workspace/vllm /home/package/
+# 一般如果是-e 元源码安装的话，meta data路径会在源码在同一级路径，否则默认就是site-packges下
+cp /usr/local/python3.11/site-packages/vllm-0.11.0+empty.dist-info  /home/package/
+cd /home/package
+cat << "export PYTHONPATH=/home/package:$PYTHONPATH" >> env.sh
+
+#更改meta data下的direct_url.json里面的路径为当前/home/package下的路径
+#
+source /home/package/env.sh
+```
