@@ -7,16 +7,15 @@
 ### python安装
 ```sh
 apt update
-apt install python3.11-full
+apt install python3.11-full -y
 # --install <link> <name> <path> <priority>
 update-alternatives \
   --install /usr/bin/python3 python3 /usr/bin/python3.11 311
-  sudo update-alternatives --config python3
 #一个name可以用多个path，每个path都有不同的优先级，比如python3这个name有python3.10,python3.11
 update-alternatives --display python3
 update-alternatives --config python3
-apt install python-is-python3
-apt install python3-pip 
+apt install python-is-python3 -y
+apt install python3-pip -y
 
 ```
 ### pip常用命令
