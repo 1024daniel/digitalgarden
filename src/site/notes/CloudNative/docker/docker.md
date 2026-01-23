@@ -113,7 +113,20 @@ docker build -t base:v0 --no-cache .
 ```
 dockerfile中两个连续的RUN之间的状态并不连续一致的，每一个RUN开始都会进入到/home/currentUser目录下，而非后一个RUN命令开始会在前一个RUN最后所在的目录下
 ### 3. Docker的镜像
+#skopeo
+在不修改docker代理, restart docker daemon的情况下可以使用skopeo工具来进行离线download镜像到本地，可以参考案例[[AI/ascend/大ep/openeuler大ep部署\|openeuler大ep部署]]
 docker镜像可以直接由dockerfile制备，或者可以将运行中的容器当前的文件系统和状态保存下来
+
+```sh
+# 查看有那些arch
+skopeo inspect --raw docker://ubuntu:22.04 |grep -i architect
+
+skopeo inspect \
+  --override-os=linux \
+  --override-arch=arm64 \
+  docker://ubuntu:22.04
+
+```
 
 ```bash
 docker commit container_name repo:tag #将当前容器状态保存到镜像repo:tag
